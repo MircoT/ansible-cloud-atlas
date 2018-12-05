@@ -44,52 +44,52 @@
     state: present
   when: ansible_os_family == "Darwin"
 
-    - name: DARWIN - Update repositories cache and install "bc" package
-      homebrew:
-        name: bc
-        state: present
-      when: ansible_os_family == "Darwin"
-    
-    - name: Download oh-my-zsh installer
-      get_url:
-        url: https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
-        dest: /tmp/oh-my-zsh_install.sh
-        mode: u+x
-    
-    - name: Install oh-my-zsh
-      shell: /tmp/oh-my-zsh_install.sh
-    
-    - name: Clone powerlevel9k
-      git:
-        repo: 'https://github.com/bhilburn/powerlevel9k.git'
-        dest: ~/.oh-my-zsh/custom/themes/powerlevel9k
-        clone: yes
+- name: DARWIN - Update repositories cache and install "bc" package
+  homebrew:
+    name: bc
+    state: present
+  when: ansible_os_family == "Darwin"
 
-    - name: Set new theme
-      replace:
-        path: ~/.zshrc
-        regexp: '^ZSH\_THEME\=\"robbyrussell\"$'
-        replace: 'ZSH_THEME="powerlevel9k/powerlevel9k"'
+- name: Download oh-my-zsh installer
+  get_url:
+    url: https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+    dest: /tmp/oh-my-zsh_install.sh
+    mode: u+x
 
-    - name: Set plugins
-      replace:
-        path: ~/.zshrc
-        regexp: '^plugins\=\($'
-        replace: 'plugins=(docker sudo web-search encode64'
+- name: Install oh-my-zsh
+  shell: /tmp/oh-my-zsh_install.sh
 
-    - name: Add powerlevel9k configuration
-      blockinfile:
-        path: ~/.zshrc
-        create: no
-        insertafter: EOF
-        block: |
-          POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context dir virtualenv vcs ssh)
-          POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
-          POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-          POWERLEVEL9K_COLOR_SCHEME='dark'
-          # Shrink folder
-          POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
-          POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
-          POWERLEVEL9K_SHORTEN_DELIMITER=""
-          # Writable folder
-          POWERLEVEL9K_DIR_SHOW_WRITABLE=true
+- name: Clone powerlevel9k
+  git:
+    repo: 'https://github.com/bhilburn/powerlevel9k.git'
+    dest: ~/.oh-my-zsh/custom/themes/powerlevel9k
+    clone: yes
+
+- name: Set new theme
+  replace:
+    path: ~/.zshrc
+    regexp: '^ZSH\_THEME\=\"robbyrussell\"$'
+    replace: 'ZSH_THEME="powerlevel9k/powerlevel9k"'
+
+- name: Set plugins
+  replace:
+    path: ~/.zshrc
+    regexp: '^plugins\=\($'
+    replace: 'plugins=(docker sudo web-search encode64'
+
+- name: Add powerlevel9k configuration
+  blockinfile:
+    path: ~/.zshrc
+    create: no
+    insertafter: EOF
+    block: |
+      POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context dir virtualenv vcs ssh)
+      POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
+      POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+      POWERLEVEL9K_COLOR_SCHEME='dark'
+      # Shrink folder
+      POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
+      POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
+      POWERLEVEL9K_SHORTEN_DELIMITER=""
+      # Writable folder
+      POWERLEVEL9K_DIR_SHOW_WRITABLE=true
