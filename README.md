@@ -9,7 +9,7 @@ How to
 
 ```bash
 git clone https://github.com/MircoT/ansible-cloud-atlas
-ln -s $HOMR/ansible-cloud-atlas $HOMR/.ansible/roles/ansible_cloud_atlas
+ln -s $HOME/ansible-cloud-atlas $HOME/.ansible/roles/ansible_cloud_atlas
 cd ansible-cloud-atlas
 ansible-playbook tests/test.yml
 ```
