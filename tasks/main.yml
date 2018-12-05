@@ -1,5 +1,9 @@
 ---
 # tasks file for cloud_atlas
-- name: pm2
+- name: "Target -> zsh"
+  include_tasks: task_zsh.yml
+  when: target_task == "zsh"
+
+- name: "Target -> pm2"
   include_tasks: task_pm2.yml
   when: target_task == "pm2"
