@@ -4,6 +4,23 @@ An Ansible role with useful tools for cloud systems.
 
 A brief description of the role goes here.
 
+How to
+------
+
+```bash
+git clone https://github.com/MircoT/ansible-cloud-atlas
+ln -s $HOMR/ansible-cloud-atlas $HOMR/.ansible/roles/ansible_cloud_atlas
+cd ansible-cloud-atlas
+ansible-playbook tests/test.yml
+```
+
+If you want to install a specific target:
+
+```bash
+ansible-playbook tests/test.yml --extra-vars "target_task=pm2"
+```
+
+
 Requirements
 ------------
 
