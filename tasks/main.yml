@@ -1,2 +1,5 @@
 ---
 # tasks file for cloud_atlas
+- name: pm2
+  include: task_pm2.yaml
+  when: target_task == "pm2"

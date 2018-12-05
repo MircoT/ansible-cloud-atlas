@@ -1,2 +1,3 @@
 ---
 # defaults file for cloud_atlas
+target_task: all

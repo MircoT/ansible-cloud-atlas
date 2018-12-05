@@ -1,0 +1,24 @@
+---
+- name:  DEBIAN - Add PM2 apt key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: D1EA2D4C
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name:  DEBIAN - Add PM2 repo
+  apt_repository:
+    repo: deb http://apt.pm2.io/ubuntu stable main
+    state: present
+    filename: pm2
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: DEBIAN - Update repositories cache and install "pm2" package
+  apt:
+    name: pm2
+    update_cache: yes
+    autoclean: yes
+    autoremove: yes
+  become: true
+  when: ansible_os_family == "Debian"
