@@ -164,12 +164,13 @@
         insertafter: EOF
         block: |
           POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context dir virtualenv vcs ssh)
+          #POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history ip load ram swap battery time)
           POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
           POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-          POWERLEVEL9K_COLOR_SCHEME='dark'
+          POWERLEVEL9K_COLOR_SCHEME='light'
           # Shrink folder
           POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
-          POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
+          POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
           POWERLEVEL9K_SHORTEN_DELIMITER=""
           # Writable folder
           POWERLEVEL9K_DIR_SHOW_WRITABLE=true
