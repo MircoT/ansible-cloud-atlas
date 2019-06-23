@@ -1,95 +1,124 @@
 ---
-- name: DEBIAN - Update repositories cache and install "zsh" package
-  apt:
-    name: zsh
-    update_cache: yes
-    autoclean: yes
-    autoremove: yes
-  become: true
-  when: ansible_os_family == "Debian"
+- name: Install OpenSSH-Server
+  hosts: localhost
+  tasks:
+    - name: Get the username running the deploy
+      become: false
+      local_action: command whoami
+      register: task_whoami
+    
+    - debug: 
+        var: task_whoami
 
-- name: DEBIAN - Update repositories cache and install "git" package
-  apt:
-    name: git
-    update_cache: yes
-    autoclean: yes
-    autoremove: yes
-  become: true
-  when: ansible_os_family == "Debian"
+    - name: DEBIAN - Update repositories cache and install "zsh" package
+      apt:
+        name: zsh
+        update_cache: yes
+        autoclean: yes
+        autoremove: yes
+      become: true
+      when: ansible_os_family == "Debian"
 
-- name: DEBIAN - Update repositories cache and install "bc" package
-  apt:
-    name: bc
-    update_cache: yes
-    autoclean: yes
-    autoremove: yes
-  become: true
-  when: ansible_os_family == "Debian"
+    - name: DEBIAN - Update repositories cache and install "git" package
+      apt:
+        name: git
+        update_cache: yes
+        autoclean: yes
+        autoremove: yes
+      become: true
+      when: ansible_os_family == "Debian"
 
-- name: DARWIN - Upgrade homebrew
-  homebrew:
-      update_homebrew: yes
-      upgrade_all: yes
-  when: ansible_os_family == "Darwin"
+    - name: DEBIAN - Update repositories cache and install "bc" package
+      apt:
+        name: bc
+        update_cache: yes
+        autoclean: yes
+        autoremove: yes
+      become: true
+      when: ansible_os_family == "Debian"
 
-- name: DARWIN - Update repositories cache and install "zsh" package
-  homebrew:
-    name: zsh
-    state: present
-  when: ansible_os_family == "Darwin"
+    - name: DARWIN - Upgrade homebrew
+      homebrew:
+          update_homebrew: yes
+          upgrade_all: yes
+      when: ansible_os_family == "Darwin"
 
-- name: DARWIN - Update repositories cache and install "git" package
-  homebrew:
-    name: git
-    state: present
-  when: ansible_os_family == "Darwin"
+    - name: DARWIN - Update repositories cache and install "zsh" package
+      homebrew:
+        name: zsh
+        state: present
+      when: ansible_os_family == "Darwin"
 
-- name: DARWIN - Update repositories cache and install "bc" package
-  homebrew:
-    name: bc
-    state: present
-  when: ansible_os_family == "Darwin"
+    - name: DARWIN - Update repositories cache and install "git" package
+      homebrew:
+        name: git
+        state: present
+      when: ansible_os_family == "Darwin"
 
-- name: Download oh-my-zsh installer
-  get_url:
-    url: https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
-    dest: /tmp/oh-my-zsh_install.sh
-    mode: u+x
+    - name: DARWIN - Update repositories cache and install "bc" package
+      homebrew:
+        name: bc
+        state: present
+      when: ansible_os_family == "Darwin"
 
-- name: Install oh-my-zsh
-  shell: /tmp/oh-my-zsh_install.sh
+    - name: Download oh-my-zsh installer
+      get_url:
+        url: https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+        dest: /tmp/oh-my-zsh_install.sh
+        mode: u+x
 
-- name: Clone powerlevel9k
-  git:
-    repo: 'https://github.com/bhilburn/powerlevel9k.git'
-    dest: ~/.oh-my-zsh/custom/themes/powerlevel9k
-    clone: yes
+    - name: Install oh-my-zsh
+      shell: /tmp/oh-my-zsh_install.sh
+    
+    - name: Remove installer file
+      file:
+      state: absent
+      path: /tmp/oh-my-zsh_install.sh
 
-- name: Set new theme
-  replace:
-    path: ~/.zshrc
-    regexp: '^ZSH\_THEME\=\"robbyrussell\"$'
-    replace: 'ZSH_THEME="powerlevel9k/powerlevel9k"'
+    - name: Clone powerlevel9k
+      git:
+        repo: 'https://github.com/bhilburn/powerlevel9k.git'
+        dest: ~/.oh-my-zsh/custom/themes/powerlevel9k
+        clone: yes
 
-- name: Set plugins
-  replace:
-    path: ~/.zshrc
-    regexp: '^plugins\=\($'
-    replace: 'plugins=(docker sudo web-search encode64'
+    - name: Set new theme
+      replace:
+        path: ~/.zshrc
+        regexp: '^ZSH\_THEME\=\"robbyrussell\"$'
+        replace: 'ZSH_THEME="powerlevel9k/powerlevel9k"'
 
-- name: Add powerlevel9k configuration
-  blockinfile:
-    path: ~/.zshrc
-    create: no
-    insertafter: EOF
-    block: |
-      POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context dir virtualenv vcs ssh)
-      POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
-      POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-      POWERLEVEL9K_COLOR_SCHEME='dark'
-      # Shrink folder
-      POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
-      POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
-      POWERLEVEL9K_SHORTEN_DELIMITER=""
-      # Writable folder
-      POWERLEVEL9K_DIR_SHOW_WRITABLE=true
+    - name: Set plugins
+      replace:
+        path: ~/.zshrc
+        regexp: '^plugins\=\($'
+        replace: 'plugins=(docker sudo web-search encode64'
+
+    - name: Add powerlevel9k configuration
+      blockinfile:
+        path: ~/.zshrc
+        create: no
+        insertafter: EOF
+        block: |
+          POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context dir virtualenv vcs ssh)
+          POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
+          POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+          POWERLEVEL9K_COLOR_SCHEME='dark'
+          # Shrink folder
+          POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
+          POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
+          POWERLEVEL9K_SHORTEN_DELIMITER=""
+          # Writable folder
+          POWERLEVEL9K_DIR_SHOW_WRITABLE=true
+    
+    - name: Check zsh path
+      become: false
+      local_action: command which zsh
+      register: task_which
+    
+    - debug: 
+        var: task_which
+    
+    - name: Change user shell
+      user:
+        name: {{task_whoami.stdout}}
+        shell: {{task_which.stdout}}
