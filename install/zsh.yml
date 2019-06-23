@@ -148,11 +148,8 @@
         replace: 'plugins=(zsh-completions zsh-autosuggestions zsh-syntax-highlighting zsh-navigation-tools'
       when: ansible_os_family == "Debian"
     
-    - name: Update completions
-      command: autoload -U compinit
-    
-    - name: Compinit
-      command: compinit
+    - name: Update completions and compinit
+      shell: autoload -U compinit && compinit
 
     - name: Add powerlevel9k configuration
       blockinfile:
