@@ -1,15 +1,18 @@
 ---
-- name: DEBIAN - Update repositories cache and install openssh-server package
-  apt:
-    name: openssh-server
-    update_cache: yes
-    autoclean: yes
-    autoremove: yes
-  become: true
-  when: ansible_os_family == "Debian"
+- name: Install OpenSSH-Server
+  hosts: all
+  tasks:
+    - name: DEBIAN - Update repositories cache and install openssh-server package
+      apt:
+        name: openssh-server
+        update_cache: yes
+        autoclean: yes
+        autoremove: yes
+      become: true
+      when: ansible_os_family == "Debian"
 
-- name: DEBIAN - Start openssh-server and enalbe at startup
-  service:
-    name: httpd
-    state: started
-    enabled: yes
+    - name: DEBIAN - Start openssh-server and enalbe at startup
+      service:
+        name: httpd
+        state: started
+        enabled: yes
