@@ -151,7 +151,7 @@
     - name: Update completions and compinit
       shell: autoload -U compinit && compinit
       args:
-        executable: /bin/bash
+        executable: /usr/bin/zsh
 
     - name: Add powerlevel9k configuration
       blockinfile:
