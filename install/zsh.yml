@@ -151,7 +151,7 @@
     
     - name: Update completions
       become: false
-      command: autoload -U compinit && compinit
+      command: autoload -U compinit
     
     - name: Compinit
       become: false
