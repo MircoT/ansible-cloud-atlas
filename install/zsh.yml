@@ -3,7 +3,6 @@
   hosts: localhost
   tasks:
     - name: Get the username running the deploy
-      become: false
       local_action: command whoami
       register: task_whoami
     
@@ -150,11 +149,9 @@
       when: ansible_os_family == "Debian"
     
     - name: Update completions
-      become: false
       command: autoload -U compinit
     
     - name: Compinit
-      become: false
       command: compinit
 
     - name: Add powerlevel9k configuration
@@ -197,7 +194,6 @@
       when: ansible_os_family == "Darwin"
     
     - name: Get zsh path
-      become: false
       local_action: command which zsh
       register: task_which
     
