@@ -72,8 +72,8 @@
     
     - name: Remove installer file
       file:
-      state: absent
-      path: /tmp/oh-my-zsh_install.sh
+        state: absent
+        path: /tmp/oh-my-zsh_install.sh
 
     - name: Clone powerlevel9k
       git:
