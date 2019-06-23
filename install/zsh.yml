@@ -5,7 +5,7 @@
     - name: Get the username running the deploy
       local_action: command whoami
       register: task_whoami
-    
+
     - debug: 
         var: task_whoami
 
@@ -69,7 +69,7 @@
         name: zsh-autosuggestions
         state: present
       when: ansible_os_family == "Darwin"
-    
+
     - name: DARWIN - Update repositories cache and install "zsh-completions" package
       homebrew:
         name: zsh-completions
@@ -81,7 +81,7 @@
         name: zsh-navigation-tools
         state: present
       when: ansible_os_family == "Darwin"
-    
+
     - name: DARWIN - Update repositories cache and install "zsh-syntax-highlighting" package
       homebrew:
         name: zsh-syntax-highlighting
@@ -96,7 +96,7 @@
 
     - name: Install oh-my-zsh
       shell: /tmp/oh-my-zsh_install.sh
-    
+
     - name: Remove installer file
       file:
         state: absent
@@ -119,35 +119,35 @@
         path: ~/.zshrc
         regexp: '^plugins\=\($'
         replace: 'plugins=(docker sudo web-search encode64 shrink-path golang'
-    
+
     - name: Clone zsh-completions
       git:
         repo: 'https://github.com/zsh-users/zsh-completions'
         dest: ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
         clone: yes
       when: ansible_os_family == "Debian"
-    
+
     - name: Clone zsh-autosuggestions
       git:
         repo: 'https://github.com/zsh-users/zsh-autosuggestions'
         dest: ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
         clone: yes
       when: ansible_os_family == "Debian"
-    
+
     - name: Clone zsh-syntax-highlighting.git
       git:
         repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
         dest: ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
         clone: yes
       when: ansible_os_family == "Debian"
-    
+
     - name: Add zsh suggestion plugins
       replace:
         path: ~/.zshrc
         regexp: '^plugins\=\($'
         replace: 'plugins=(zsh-completions zsh-autosuggestions zsh-syntax-highlighting zsh-navigation-tools'
       when: ansible_os_family == "Debian"
-    
+
     - name: Update completions and compinit
       shell: autoload -U compinit && compinit
       args:
@@ -172,7 +172,7 @@
           POWERLEVEL9K_DIR_SHOW_WRITABLE=true
           # Aliases
           alias lll="ls -altrh"
-    
+
     - name: Add zsh plugins
       blockinfile:
         path: ~/.zshrc
@@ -191,14 +191,14 @@
           # ZSH NAVIGATION
           source /usr/local/share/zsh-navigation-tools/zsh-navigation-tools.plugin.zsh
       when: ansible_os_family == "Darwin"
-    
+
     - name: Get zsh path
       local_action: command which zsh
       register: task_which
-    
+
     - debug: 
         var: task_which
-    
+
     - name: Change user shell
       become: true
       user:
