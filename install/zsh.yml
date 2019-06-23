@@ -10,6 +10,8 @@
     - debug: 
         var: task_whoami
 
+    ##
+    # DEBIAN
     - name: DEBIAN - Update repositories cache and install "zsh" package
       apt:
         name: zsh
@@ -37,6 +39,8 @@
       become: true
       when: ansible_os_family == "Debian"
 
+    ##
+    # DARWIN
     - name: DARWIN - Upgrade homebrew
       homebrew:
           update_homebrew: yes
@@ -58,6 +62,30 @@
     - name: DARWIN - Update repositories cache and install "bc" package
       homebrew:
         name: bc
+        state: present
+      when: ansible_os_family == "Darwin"
+
+    - name: DARWIN - Update repositories cache and install "zsh-autosuggestions" package
+      homebrew:
+        name: zsh-autosuggestions
+        state: present
+      when: ansible_os_family == "Darwin"
+    
+    - name: DARWIN - Update repositories cache and install "zsh-completions" package
+      homebrew:
+        name: zsh-completions
+        state: present
+      when: ansible_os_family == "Darwin"
+
+    - name: DARWIN - Update repositories cache and install "zsh-navigation-tools" package
+      homebrew:
+        name: zsh-navigation-tools
+        state: present
+      when: ansible_os_family == "Darwin"
+    
+    - name: DARWIN - Update repositories cache and install "zsh-syntax-highlighting" package
+      homebrew:
+        name: zsh-syntax-highlighting
         state: present
       when: ansible_os_family == "Darwin"
 
@@ -91,7 +119,39 @@
       replace:
         path: ~/.zshrc
         regexp: '^plugins\=\($'
-        replace: 'plugins=(docker sudo web-search encode64'
+        replace: 'plugins=(docker sudo web-search encode64 shrink-path golang'
+    
+    - name: Clone zsh-completions
+      git:
+        repo: 'https://github.com/zsh-users/zsh-completions'
+        dest: ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
+        clone: yes
+      when: ansible_os_family == "Debian"
+    
+    - name: Clone zsh-autosuggestions
+      git:
+        repo: 'https://github.com/zsh-users/zsh-autosuggestions'
+        dest: ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+        clone: yes
+      when: ansible_os_family == "Debian"
+    
+    - name: Clone zsh-syntax-highlighting.git
+      git:
+        repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
+        dest: ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+        clone: yes
+      when: ansible_os_family == "Debian"
+    
+    - name: Add zsh suggestion plugins
+      replace:
+        path: ~/.zshrc
+        regexp: '^plugins\=\($'
+        replace: 'plugins=(zsh-completions zsh-autosuggestions zsh-syntax-highlighting zsh-navigation-tools'
+      when: ansible_os_family == "Debian"
+    
+    - name: Update completions
+      become: false
+      local_action: command autoload -U compinit && compinit
 
     - name: Add powerlevel9k configuration
       blockinfile:
@@ -109,6 +169,27 @@
           POWERLEVEL9K_SHORTEN_DELIMITER=""
           # Writable folder
           POWERLEVEL9K_DIR_SHOW_WRITABLE=true
+          # Aliases
+          alias lll="ls -altrh"
+    
+    - name: Add zsh plugins
+      blockinfile:
+        path: ~/.zshrc
+        create: no
+        insertafter: EOF
+        block: |
+          # ZSH completions
+          fpath=(/usr/local/share/zsh-completions $fpath)
+          # ZSH syntax hilight
+          export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/usr/local/share/zsh-syntax-highlighting/highlighters
+          source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+          # ZSH AUTOSUGGESTIONS
+          source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+          # ZSH NAVIGATION
+          source /usr/local/share/zsh-navigation-tools/zsh-navigation-tools.plugin.zsh
+      when: ansible_os_family == "Darwin"
     
     - name: Get zsh path
       become: false
