@@ -119,6 +119,7 @@
         var: task_which
     
     - name: Change user shell
+      become: true
       user:
         name: "{{task_whoami.stdout}}"
         shell: "{{task_which.stdout}}"
