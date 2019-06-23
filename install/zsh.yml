@@ -151,13 +151,11 @@
     
     - name: Update completions
       become: false
-      local_action: 
-        command: autoload -U compinit && compinit
+      command: autoload -U compinit && compinit
     
     - name: Compinit
       become: false
-      local_action: 
-        command: compinit
+      command: compinit
 
     - name: Add powerlevel9k configuration
       blockinfile:
