@@ -13,6 +13,6 @@
 
     - name: DEBIAN - Start openssh-server and enalbe at startup
       service:
-        name: httpd
+        name: sshd
         state: started
         enabled: yes
