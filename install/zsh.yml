@@ -107,6 +107,7 @@
         repo: 'https://github.com/bhilburn/powerlevel9k.git'
         dest: ~/.oh-my-zsh/custom/themes/powerlevel9k
         clone: yes
+        update: yes
 
     - name: Set new theme
       replace:
@@ -125,6 +126,7 @@
         repo: 'https://github.com/zsh-users/zsh-completions'
         dest: ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
         clone: yes
+        update: yes
       when: ansible_os_family == "Debian"
     
     - name: Clone zsh-autosuggestions
@@ -132,6 +134,7 @@
         repo: 'https://github.com/zsh-users/zsh-autosuggestions'
         dest: ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
         clone: yes
+        update: yes
       when: ansible_os_family == "Debian"
     
     - name: Clone zsh-syntax-highlighting.git
@@ -139,6 +142,7 @@
         repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
         dest: ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
         clone: yes
+        update: yes
       when: ansible_os_family == "Debian"
     
     - name: Add zsh suggestion plugins
