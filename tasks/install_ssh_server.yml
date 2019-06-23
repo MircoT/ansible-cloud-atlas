@@ -1,6 +1,6 @@
 ---
 - name: Install OpenSSH-Server
-  hosts: all
+  hosts: localhost
   tasks:
     - name: DEBIAN - Update repositories cache and install openssh-server package
       apt:
