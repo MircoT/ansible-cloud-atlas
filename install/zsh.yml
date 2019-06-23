@@ -110,7 +110,7 @@
           # Writable folder
           POWERLEVEL9K_DIR_SHOW_WRITABLE=true
     
-    - name: Check zsh path
+    - name: Get zsh path
       become: false
       local_action: command which zsh
       register: task_which
