@@ -120,5 +120,5 @@
     
     - name: Change user shell
       user:
-        name: {{task_whoami.stdout}}
-        shell: {{task_which.stdout}}
+        name: "{{task_whoami.stdout}}"
+        shell: "{{task_which.stdout}}"
