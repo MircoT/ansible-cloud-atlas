@@ -1,9 +1,13 @@
 ---
 # tasks file for cloud_atlas
-- name: "Target -> zsh"
-  include_tasks: task_zsh.yml
-  when: target_task == "zsh"
+# - name: "Target -> zsh"
+#   include_tasks: task_zsh.yml
+#   when: target_task == "zsh"
 
-- name: "Target -> pm2"
-  include_tasks: task_pm2.yml
-  when: target_task == "pm2"
+# - name: "Target -> pm2"
+#   include_tasks: task_pm2.yml
+#   when: target_task == "pm2"
+
+- name: "Install ssh server"
+  include_tasks: "install_{software}.yml"
+  when: target == "install" and object == "ssh_server"
