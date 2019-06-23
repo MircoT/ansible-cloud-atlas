@@ -109,16 +109,16 @@
         clone: yes
 
     - name: Set new theme
-      replace:
+      lineinfile:
         path: ~/.zshrc
         regexp: '^ZSH\_THEME\=\"robbyrussell\"$'
-        replace: 'ZSH_THEME="powerlevel9k/powerlevel9k"'
+        line: 'ZSH_THEME="powerlevel9k/powerlevel9k"'
 
     - name: Set plugins
-      replace:
+      lineinfile:
         path: ~/.zshrc
         regexp: '^plugins\=\($'
-        replace: 'plugins=(docker sudo web-search encode64 shrink-path golang'
+        line: 'plugins=(docker sudo web-search encode64 shrink-path golang'
 
     - name: Clone zsh-completions
       git:
@@ -142,10 +142,10 @@
       when: ansible_os_family == "Debian"
 
     - name: Add zsh suggestion plugins
-      replace:
+      lineinfile:
         path: ~/.zshrc
-        regexp: '^plugins\=\($'
-        replace: 'plugins=(zsh-completions zsh-autosuggestions zsh-syntax-highlighting zsh-navigation-tools'
+        regexp: '^plugins=\($'
+        line: 'plugins=(zsh-completions zsh-autosuggestions zsh-syntax-highlighting zsh-navigation-tools'
       when: ansible_os_family == "Debian"
 
     - name: Update completions and compinit
