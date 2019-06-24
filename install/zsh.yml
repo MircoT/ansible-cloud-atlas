@@ -110,15 +110,9 @@
 
     - name: Set new theme
       lineinfile:
-        path: ~/.zshrc
+        dest: ~/.zshrc
         regexp: '^ZSH\_THEME\=\"robbyrussell\"$'
         line: 'ZSH_THEME="powerlevel9k/powerlevel9k"'
-
-    - name: Set plugins
-      lineinfile:
-        path: ~/.zshrc
-        regexp: '^plugins\=\($'
-        line: 'plugins=(docker sudo web-search encode64 shrink-path golang'
 
     - name: Clone zsh-completions
       git:
@@ -141,11 +135,11 @@
         clone: yes
       when: ansible_os_family == "Debian"
 
-    - name: Add zsh suggestion plugins
+    - name: Add zsh plugins
       lineinfile:
-        path: ~/.zshrc
-        regexp: '^plugins=\($'
-        line: 'plugins=(zsh-completions zsh-autosuggestions zsh-syntax-highlighting zsh-navigation-tools'
+        dest: ~/.zshrc
+        regexp: '^plugins=\('
+        line: 'plugins=(docker sudo web-search encode64 shrink-path golang zsh-completions zsh-autosuggestions zsh-syntax-highlighting zsh-navigation-tools)'
       when: ansible_os_family == "Debian"
 
     - name: Update completions and compinit
@@ -155,7 +149,7 @@
 
     - name: Add powerlevel9k configuration
       blockinfile:
-        path: ~/.zshrc
+        dest: ~/.zshrc
         create: no
         insertafter: EOF
         block: |
@@ -175,7 +169,7 @@
 
     - name: Add zsh plugins
       blockinfile:
-        path: ~/.zshrc
+        dest: ~/.zshrc
         create: no
         insertafter: EOF
         block: |
